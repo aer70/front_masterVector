@@ -1,4 +1,4 @@
-const API_BASE = "https://localhost:8000";
+const API_BASE = "https://backendmastervector.railway.internal";
 
 const stateNodes = {
   upload: document.getElementById("uploadState"),

@@ -1,4 +1,4 @@
-const API_BASE = "http://localhost:8000";
+const API_BASE = "http://backendmastervector.railway.internal";
 
 const loginForm = document.getElementById("loginForm");
 const registerForm = document.getElementById("registerForm");
