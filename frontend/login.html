@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>МастерВектор - Вход</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="top-strip">
+    <div class="top-actions">
+      <a class="btn btn-strip" href="index.html">Главная</a>
+      <a class="btn btn-strip" href="register.html">Регистрация</a>
+    </div>
+    <div class="hero-title-wrap">
+      <h1>Вход</h1>
+      <p>Авторизация в личный кабинет</p>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <section class="auth-card">
+      <h2>Войти</h2>
+      <form id="loginForm">
+        <label for="email">Email</label>
+        <input id="email" type="email" placeholder="you@example.com" required />
+
+        <label for="password">Пароль</label>
+        <input id="password" type="password" placeholder="Введите пароль" required />
+
+        <button type="submit" class="btn btn-main">Войти</button>
+      </form>
+      <p id="authError" class="error-text" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <script src="auth.js"></script>
+</body>
+</html>

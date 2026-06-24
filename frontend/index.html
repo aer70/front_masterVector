@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>МастерВектор - Главная</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="top-strip">
+    <div class="top-actions">
+      <a id="loginBtn" class="btn btn-strip" href="login.html">Вход</a>
+      <a id="registerBtn" class="btn btn-strip" href="register.html">Регистрация</a>
+      <button id="logoutBtn" class="btn btn-strip" type="button">Выйти</button>
+    </div>
+    <div class="hero-title-wrap">
+      <h1>МастерВектор</h1>
+      <p id="userInfo">Режим загрузки</p>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <section class="center-panel">
+      <div id="uploadState" class="state-block visible">
+        <label for="bmpFile" class="btn btn-main">Загрузить картинку</label>
+        <input id="bmpFile" type="file" accept=".bmp,image/bmp" />
+
+        <div class="upload-columns">
+          <section class="settings-card" aria-label="Настройки обработки">
+            <h2>Настройки обработки</h2>
+            <div class="settings-grid">
+              <label class="settings-field" for="settingMethod">
+                <span>Метод рендеринга</span>
+                <select id="settingMethod">
+                  <option value="rle" selected>RLE (пиксельно-точно)</option>
+                  <option value="contours">Contours (меньше узлов)</option>
+                </select>
+              </label>
+
+              <label class="settings-field" for="settingPreScaleFactor">
+                <span>Масштаб входа (pre_scale_factor)</span>
+                <input id="settingPreScaleFactor" type="number" value="3" min="0.1" step="0.1" />
+              </label>
+
+              <label class="settings-field" for="settingMinArea">
+                <span>Минимальная площадь (min_area)</span>
+                <input id="settingMinArea" type="number" value="1" min="1" step="1" />
+              </label>
+
+              <label class="settings-field" for="settingConnectRadius">
+                <span>Радиус соединения (connect_radius_px)</span>
+                <input id="settingConnectRadius" type="number" value="1" min="0" step="0.1" />
+              </label>
+
+              <label class="settings-field" for="settingConnectOp">
+                <span>Операция соединения</span>
+                <select id="settingConnectOp">
+                  <option value="dilate" selected>dilate</option>
+                  <option value="close">close</option>
+                  <option value="none">none</option>
+                </select>
+              </label>
+
+              <label class="settings-field" for="settingCollinearTol">
+                <span>Допуск коллинеарности (collinear_tol)</span>
+                <input id="settingCollinearTol" type="number" value="0" min="0" step="0.1" />
+              </label>
+            </div>
+
+            <div class="settings-switches">
+              <label><input id="settingIgnoreBackground" type="checkbox" checked /> Игнорировать фон</label>
+              <label><input id="settingDrawBackground" type="checkbox" checked /> Рисовать фон в SVG</label>
+              <label><input id="settingConnectSameColor" type="checkbox" checked /> Соединять фрагменты одного цвета</label>
+              <label><input id="settingConnect4Neighbors" type="checkbox" checked /> 4-соседство для соединения</label>
+              <label><input id="settingSimplifyCollinear" type="checkbox" checked /> Удалять коллинеарные узлы</label>
+            </div>
+
+            <details class="settings-help">
+              <summary>Справка по настройкам</summary>
+              <ul>
+                <li><strong>method:</strong> <em>rle</em> дает максимально точный контур по пикселям, <em>contours</em> обычно уменьшает размер SVG и число узлов.</li>
+                <li><strong>pre_scale_factor:</strong> увеличение входа перед векторизацией. Больше значение сглаживает мелкие ступеньки, но может увеличивать время обработки.</li>
+                <li><strong>min_area:</strong> отбрасывает очень маленькие области. Рост значения убирает шум, но может удалить мелкие полезные детали.</li>
+                <li><strong>connect_radius_px + connect_op:</strong> управляют склейкой близких фрагментов. Большой радиус и <em>close</em> сильнее объединяют формы, но могут «слипать» соседние элементы.</li>
+                <li><strong>collinear_tol + simplify_collinear:</strong> упрощают контуры, убирая лишние точки на прямых. Чем выше допуск, тем компактнее SVG и тем выше риск потери геометрических нюансов.</li>
+                <li><strong>ignore_background:</strong> не строит вектор по цвету фона, чтобы фон не превращался в большую сплошную фигуру.</li>
+                <li><strong>draw_background:</strong> добавляет фоновый прямоугольник в SVG. Удобно для предпросмотра, но увеличивает итоговый файл.</li>
+                <li><strong>connect_same_color:</strong> объединяет близкие элементы одного цвета в более крупные области, уменьшая фрагментацию.</li>
+                <li><strong>connect_4neighbors:</strong> более строгая связность по 4 соседям; диагональные касания не считаются связными, контуры могут быть раздельнее.</li>
+                <li><strong>Дополнительный JSON:</strong> применяется последним и перекрывает значения из формы. Подходит для тонкой настройки редких параметров.</li>
+              </ul>
+            </details>
+
+            <label class="settings-field" for="settingsJson">
+              <span>Дополнительный JSON (опционально, перекрывает поля выше)</span>
+              <textarea id="settingsJson" class="settings-input" rows="5" spellcheck="false" placeholder='{"black_threshold":8,"enable_smoothing":false}'></textarea>
+            </label>
+            <button id="resetDefaultsBtn" class="btn btn-secondary" type="button">Настройки по умолчанию</button>
+          </section>
+
+          <!-- AI-панель -->
+          <aside class="ai-panel" aria-label="ИИ-ассистент">
+            <div class="ai-panel-header">
+              <span class="ai-panel-icon"></span>
+              <h2>ИИ-ассистент</h2>
+            </div>
+            <p class="ai-panel-hint">Загрузите изображение, и ИИ подберёт оптимальные настройки.</p>
+            <button id="aiSuggestBtn" class="btn btn-ai" type="button" disabled>
+              Проанализировать изображение
+            </button>
+            <div id="aiProgress" class="ai-progress hidden" aria-live="polite">
+              <div class="ai-progress-header">
+                <span id="aiProgressStage" class="ai-progress-stage">Подготовка...</span>
+                <span id="aiProgressPct" class="ai-progress-pct">0%</span>
+              </div>
+              <div class="ai-progress-bar-wrap">
+                <div id="aiProgressBar" class="ai-progress-bar-fill"></div>
+              </div>
+              <ul id="aiProgressLog" class="ai-progress-log"></ul>
+            </div>
+            <div id="aiError" class="ai-error hidden" aria-live="polite"></div>
+            <div id="aiResult" class="ai-result hidden">
+              <div class="ai-explanation-label">Объяснение ИИ:</div>
+              <div id="aiExplanation" class="ai-explanation"></div>
+              <div class="ai-settings-label">Предложенные настройки:</div>
+              <pre id="aiSettingsPreview" class="ai-settings-preview"></pre>
+              <button id="aiApplyBtn" class="btn btn-ai-apply" type="button">
+                 Применить настройки
+              </button>
+              <div id="aiModelLabel" class="ai-model-label"></div>
+            </div>
+
+            <!-- Чат для обсуждения настроек -->
+            <div id="aiChat" class="ai-chat">
+              <div class="ai-chat-header">
+                <span> Обсудить настройки</span>
+                <button id="aiChatClearBtn" class="ai-chat-clear-btn" type="button" title="Очистить историю">✕</button>
+              </div>
+              <div id="aiChatMessages" class="ai-chat-messages" aria-live="polite"></div>
+              <div class="ai-chat-input-row">
+                <textarea id="aiChatInput" class="ai-chat-input" rows="2"
+                  placeholder="Например: сделай линии тоньше, убери шум..."></textarea>
+                <button id="aiChatSendBtn" class="btn ai-chat-send-btn" type="button">➤</button>
+              </div>
+              <div id="aiChatError" class="ai-error hidden" style="font-size:0.82rem"></div>
+            </div>
+          </aside>
+        </div>
+
+        <button id="startJobBtn" class="btn btn-secondary" type="button">Запустить обработку</button>
+        <div id="formError" class="error-text" aria-live="polite"></div>
+      </div>
+
+      <div id="progressState" class="state-block" aria-live="polite">
+        <div class="progress-label">Создание и запуск задачи...</div>
+        <div class="progress-wrap">
+          <div id="progressBar" class="progress-bar"></div>
+        </div>
+        <div id="progressPercent" class="progress-percent">0%</div>
+      </div>
+
+      <div id="logsState" class="state-block" aria-live="polite">
+        <div class="logs-window">
+          <div class="logs-title">Логи обработки</div>
+          <pre id="logsOutput" class="logs-output"></pre>
+        </div>
+      </div>
+
+      <div id="doneState" class="state-block" aria-live="polite">
+        <button id="downloadSvgBtn" class="btn btn-main" type="button">Скачать SVG файл</button>
+        <button id="downloadLogBtn" class="btn btn-secondary" type="button">Скачать лог</button>
+        <button id="restartBtn" class="btn btn-secondary" type="button">Обработать новую схему</button>
+      </div>
+
+      <section class="history-card" aria-live="polite">
+        <h2>История задач</h2>
+        <ul id="jobsList" class="jobs-list"></ul>
+      </section>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

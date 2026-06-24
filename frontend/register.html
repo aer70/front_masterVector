@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>МастерВекстор - Регистрация</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="top-strip">
+    <div class="top-actions">
+      <a class="btn btn-strip" href="index.html">Главная</a>
+      <a class="btn btn-strip" href="login.html">Вход</a>
+    </div>
+    <div class="hero-title-wrap">
+      <h1>Регистрация</h1>
+      <p>Создайте новый аккаунт</p>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <section class="auth-card">
+      <h2>Регистрация</h2>
+      <form id="registerForm">
+        <label for="name">Имя</label>
+        <input id="name" type="text" placeholder="Ваше имя" required />
+
+        <label for="email">Email</label>
+        <input id="email" type="email" placeholder="you@example.com" required />
+
+        <label for="password">Пароль</label>
+        <input id="password" type="password" placeholder="Минимум 8 символов" required />
+
+        <button type="submit" class="btn btn-main">Создать аккаунт</button>
+      </form>
+      <p id="authError" class="error-text" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <script src="auth.js"></script>
+</body>
+</html>
