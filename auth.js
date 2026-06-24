@@ -1,4 +1,4 @@
-const API_BASE = "http://backendmastervector.railway.internal";
+const API_BASE = "https://backendmastervector-production.up.railway.app";
 
 const loginForm = document.getElementById("loginForm");
 const registerForm = document.getElementById("registerForm");

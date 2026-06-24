@@ -1,4 +1,4 @@
-const API_BASE = "https://backendmastervector.railway.internal";
+const API_BASE = "https://backendmastervector-production.up.railway.app";
 
 const stateNodes = {
   upload: document.getElementById("uploadState"),
